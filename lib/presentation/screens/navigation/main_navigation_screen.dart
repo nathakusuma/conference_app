@@ -18,7 +18,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<Widget> _screens = [
     const BrowseScreen(),
-    const Center(child: Text("Proposals -- TODO")),
     const RegistrationsScreen(),
     const ProfileScreen(),
   ];
@@ -34,10 +33,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),
             label: 'Browse',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.forum),
-            label: 'Proposals',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.event_available),
