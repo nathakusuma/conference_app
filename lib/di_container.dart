@@ -10,8 +10,11 @@ import 'data/datasources/conference_remote_data_source.dart';
 import 'data/repositories/auth_repository_impl.dart';
 import 'data/repositories/profile_repository_impl.dart';
 import 'data/repositories/conference_repository_impl.dart';
+import 'data/datasources/registration_remote_data_source.dart';
+import 'data/repositories/registration_repository_impl.dart';
 
 import 'domain/repositories/conference_repository.dart';
+import 'domain/repositories/registration_repository.dart';
 import 'domain/usecases/auth/login_user.dart';
 import 'domain/usecases/auth/logout_user.dart';
 import 'domain/usecases/auth/register_user.dart';
@@ -23,11 +26,15 @@ import 'domain/usecases/profile/get_profile.dart';
 import 'domain/usecases/profile/update_profile.dart';
 import 'domain/usecases/conferences/get_conferences.dart';
 import 'domain/usecases/conferences/get_conference_by_id.dart';
+import 'domain/usecases/registrations/get_user_registrations.dart';
+import 'domain/usecases/registrations/register_for_conference.dart';
 
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/profile_provider.dart';
 import 'presentation/providers/browse_provider.dart';
 import 'presentation/providers/conference_detail_provider.dart';
+import 'presentation/providers/registration_action_provider.dart';
+import 'presentation/providers/registrations_provider.dart';
 
 List<SingleChildWidget> buildProviders() {
   return [
@@ -40,6 +47,7 @@ List<SingleChildWidget> buildProviders() {
         tokenStorage: context.read<TokenStorage>(),
       ),
     ),
+
     // DataSources
     Provider<AuthRemoteDataSource>(
       create: (context) => AuthRemoteDataSourceImpl(
@@ -63,6 +71,19 @@ List<SingleChildWidget> buildProviders() {
         remoteDataSource: context.read<UserRemoteDataSource>(),
       ),
     ),
+    Provider<RegistrationRemoteDataSource>(
+      create: (context) => RegistrationRemoteDataSourceImpl(
+        client: context.read<ApiClient>(),
+      ),
+    ),
+
+    // Repositories
+    Provider<RegistrationRepository>(
+      create: (context) => RegistrationRepositoryImpl(
+        remoteDataSource: context.read<RegistrationRemoteDataSource>(),
+      ),
+    ),
+
     // UseCases (Auth)
     Provider<RequestRegisterOtp>(
       create: (context) => RequestRegisterOtp(context.read<AuthRepositoryImpl>()),
@@ -85,7 +106,8 @@ List<SingleChildWidget> buildProviders() {
     Provider<ResetPassword>(
       create: (context) => ResetPassword(context.read<AuthRepositoryImpl>()),
     ),
-    // UseCases (User)
+
+    // UseCases (Profile)
     Provider<GetProfile>(
       create: (context) => GetProfile(context.read<UserRepositoryImpl>()),
     ),
@@ -108,6 +130,15 @@ List<SingleChildWidget> buildProviders() {
     Provider<GetConferenceById>(
       create: (context) => GetConferenceById(context.read<ConferenceRepository>()),
     ),
+
+    // UseCases (Registration)
+    Provider<GetUserRegistrations>(
+      create: (context) => GetUserRegistrations(context.read<RegistrationRepository>()),
+    ),
+    Provider<RegisterForConference>(
+      create: (context) => RegisterForConference(context.read<RegistrationRepository>()),
+    ),
+
     // Providers
     ChangeNotifierProvider<AuthProvider>(
       create: (context) => AuthProvider(
@@ -131,6 +162,12 @@ List<SingleChildWidget> buildProviders() {
     ),
     ChangeNotifierProvider<ConferenceDetailProvider>(
       create: (context) => ConferenceDetailProvider(context.read<GetConferenceById>()),
+    ),
+    ChangeNotifierProvider<RegistrationsProvider>(
+      create: (context) => RegistrationsProvider(context.read<GetUserRegistrations>()),
+    ),
+    ChangeNotifierProvider<RegistrationActionProvider>(
+      create: (context) => RegistrationActionProvider(context.read<RegisterForConference>()),
     ),
   ];
 }

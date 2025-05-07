@@ -1,5 +1,6 @@
 import 'package:conference_app/presentation/screens/conferences/browse_screen.dart';
 import 'package:conference_app/presentation/screens/profile/profile_screen.dart';
+import 'package:conference_app/presentation/screens/registrations/registrations_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
           BrowseScreen.routeName: (context) => const BrowseScreen(),
+          RegistrationsScreen.routeName: (context) => const RegistrationsScreen(),
         },
       ),
     );

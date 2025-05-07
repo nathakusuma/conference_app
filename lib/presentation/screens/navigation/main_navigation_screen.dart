@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../conferences/browse_screen.dart';
 import '../profile/profile_screen.dart';
+import '../registrations/registrations_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const routeName = '/main';
@@ -18,7 +19,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = [
     const BrowseScreen(),
     const Center(child: Text("Proposals -- TODO")),
-    const Center(child: Text("Registrations -- TODO")),
+    const RegistrationsScreen(),
     const ProfileScreen(),
   ];
 
