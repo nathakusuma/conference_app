@@ -133,6 +133,14 @@ class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
                       : 'Resend OTP (${authProvider.resendSeconds}s)',
                 ),
               ),
+              const SizedBox(height: 16),
+              const Center(
+                child: Text(
+                  'If you don\'t see the email, check your spam folder.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
             ],
           ),
         ),
