@@ -298,4 +298,10 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
   }
+
+  void loginSuccess(User user) {
+    _user = user;
+    _status = AuthStatus.authenticated;
+    notifyListeners();
+  }
 }

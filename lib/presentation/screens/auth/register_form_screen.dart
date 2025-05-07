@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/validators.dart';
 import '../../providers/auth_provider.dart';
+import '../navigation/main_navigation_screen.dart';
 
 class RegisterFormScreen extends StatefulWidget {
   static const routeName = '/register-form';
@@ -46,7 +47,9 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
 
     if (success && mounted) {
       // Registration completed and auto-logged in, navigate to home
-      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          MainNavigationScreen.routeName, (route) => false
+      );
     }
   }
 
@@ -118,12 +121,12 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isSubmitting ? null : _submitForm,
-                child: _isSubmitting
-                    ? const CircularProgressIndicator()
-                    : const Text('Register'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
+                child: _isSubmitting
+                    ? const CircularProgressIndicator()
+                    : const Text('Register'),
               ),
             ],
           ),

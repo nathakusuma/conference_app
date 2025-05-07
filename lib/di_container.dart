@@ -7,6 +7,9 @@ import 'data/datasources/auth_remote_data_source.dart';
 import 'data/datasources/user_remote_data_source.dart';
 import 'data/repositories/auth_repository_impl.dart';
 import 'data/repositories/user_repository_impl.dart';
+import 'data/datasources/conference_remote_data_source.dart';
+import 'data/repositories/conference_repository_impl.dart';
+import 'domain/repositories/conference_repository.dart';
 
 import 'domain/usecases/auth/login_user.dart';
 import 'domain/usecases/auth/logout_user.dart';
@@ -17,9 +20,13 @@ import 'domain/usecases/auth/reset_password.dart';
 import 'domain/usecases/auth/verify_register_otp.dart';
 import 'domain/usecases/users/get_profile.dart';
 import 'domain/usecases/users/update_profile.dart';
+import 'domain/usecases/conferences/get_conferences.dart';
+import 'domain/usecases/conferences/get_conference_by_id.dart';
 
 import 'presentation/providers/auth_provider.dart';
 import 'presentation/providers/user_provider.dart';
+import 'presentation/providers/browse_provider.dart';
+import 'presentation/providers/conference_detail_provider.dart';
 
 List<SingleChildWidget> buildProviders() {
   return [
@@ -84,6 +91,22 @@ List<SingleChildWidget> buildProviders() {
     Provider<UpdateProfile>(
       create: (context) => UpdateProfile(context.read<UserRepositoryImpl>()),
     ),
+    Provider<ConferenceRemoteDataSource>(
+      create: (context) => ConferenceRemoteDataSourceImpl(
+        client: context.read<ApiClient>(),
+      ),
+    ),
+    Provider<ConferenceRepository>(
+      create: (context) => ConferenceRepositoryImpl(
+        remoteDataSource: context.read<ConferenceRemoteDataSource>(),
+      ),
+    ),
+    Provider<GetConferences>(
+      create: (context) => GetConferences(context.read<ConferenceRepository>()),
+    ),
+    Provider<GetConferenceById>(
+      create: (context) => GetConferenceById(context.read<ConferenceRepository>()),
+    ),
     // Providers
     ChangeNotifierProvider<AuthProvider>(
       create: (context) => AuthProvider(
@@ -101,6 +124,12 @@ List<SingleChildWidget> buildProviders() {
         getProfile: context.read<GetProfile>(),
         updateProfile: context.read<UpdateProfile>(),
       ),
+    ),
+    ChangeNotifierProvider<BrowseProvider>(
+      create: (context) => BrowseProvider(context.read<GetConferences>()),
+    ),
+    ChangeNotifierProvider<ConferenceDetailProvider>(
+      create: (context) => ConferenceDetailProvider(context.read<GetConferenceById>()),
     ),
   ];
 }

@@ -4,12 +4,13 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/utils/validators.dart';
 import '../../providers/auth_provider.dart';
+import '../navigation/main_navigation_screen.dart';
 import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
 
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -48,7 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (success && mounted) {
       // Login successful, navigate to home
-      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          MainNavigationScreen.routeName, (route) => false
+      );
     }
   }
 
@@ -120,12 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isSubmitting ? null : _submitForm,
-                child: _isSubmitting
-                    ? const CircularProgressIndicator()
-                    : const Text('Login'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
+                child: _isSubmitting
+                    ? const CircularProgressIndicator()
+                    : const Text('Login'),
               ),
               const SizedBox(height: 16),
               TextButton(

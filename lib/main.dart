@@ -1,3 +1,4 @@
+import 'package:conference_app/presentation/screens/conferences/browse_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'di_container.dart';
@@ -8,7 +9,7 @@ import 'presentation/screens/auth/register_form_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
 import 'presentation/screens/auth/reset_password_screen.dart';
 import 'presentation/screens/users/profile_screen.dart';
-import 'presentation/providers/auth_provider.dart';
+import 'presentation/screens/navigation/main_navigation_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: LoginScreen.routeName,
         routes: {
-          '/': (context) => const HomeScreen(),
+          MainNavigationScreen.routeName: (context) => const MainNavigationScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
           RegisterEmailScreen.routeName: (context) => const RegisterEmailScreen(),
           RegisterOtpScreen.routeName: (context) => const RegisterOtpScreen(),
@@ -37,37 +38,8 @@ class MyApp extends StatelessWidget {
           ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
           ResetPasswordScreen.routeName: (context) => const ResetPasswordScreen(),
           ProfileScreen.routeName: (context) => const ProfileScreen(),
+          BrowseScreen.routeName: (context) => const BrowseScreen(),
         },
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await authProvider.logout();
-              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-            },
-          ),
-        ],
-      ),
-      body: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed(ProfileScreen.routeName);
-        },
-        child: const Text('View/Edit Profile'),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../../core/utils/validators.dart';
 import '../../providers/auth_provider.dart';
+import '../navigation/main_navigation_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   static const routeName = '/reset-password';
@@ -46,7 +47,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     if (success && mounted) {
       // Password reset successful and auto-logged in, navigate to home
-      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          MainNavigationScreen.routeName, (route) => false
+      );
     }
   }
 
