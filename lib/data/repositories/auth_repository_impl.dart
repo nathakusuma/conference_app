@@ -1,5 +1,4 @@
 import '../../../../core/utils/token_storage.dart';
-import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_data_source.dart';
 

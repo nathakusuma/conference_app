@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/validators.dart';
-import '../providers/auth_provider.dart';
-import 'register_form_screen.dart';
+import '../../providers/auth_provider.dart';
+import 'register_otp_screen.dart';
 
-class RegisterOtpScreen extends StatefulWidget {
-  static const routeName = '/register-otp';
+class RegisterEmailScreen extends StatefulWidget {
+  static const routeName = '/register-email';
 
-  const RegisterOtpScreen({Key? key}) : super(key: key);
+  const RegisterEmailScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterOtpScreen> createState() => _RegisterOtpScreenState();
+  State<RegisterEmailScreen> createState() => _RegisterEmailScreenState();
 }
 
-class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
+class _RegisterEmailScreenState extends State<RegisterEmailScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _otpController = TextEditingController();
+  final _emailController = TextEditingController();
   bool _isSubmitting = false;
 
   @override
   void dispose() {
-    _otpController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -33,50 +33,28 @@ class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
     });
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final success = await authProvider.verifyRegistrationOtp(_otpController.text.trim());
+    final success = await authProvider.requestRegistrationOtp(_emailController.text.trim());
 
     setState(() {
       _isSubmitting = false;
     });
 
     if (success && mounted) {
-      Navigator.of(context).pushNamed(RegisterFormScreen.routeName);
+      Navigator.of(context).pushNamed(RegisterOtpScreen.routeName);
     }
-  }
-
-  Future<void> _resendOtp() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-
-    if (authProvider.otpEmail == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Email not found. Please go back and try again.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    setState(() {
-      _isSubmitting = true;
-    });
-
-    await authProvider.requestRegistrationOtp(authProvider.otpEmail!);
-
-    setState(() {
-      _isSubmitting = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
-    if (authProvider.errorMessage != null) {
+    // Store the error message in a local variable
+    final String? errorMessage = authProvider.errorMessage;
+    if (errorMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(authProvider.errorMessage!),
+            content: Text(errorMessage), // Use local variable instead of accessing provider again
             backgroundColor: Colors.red,
           ),
         );
@@ -86,7 +64,7 @@ class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verify OTP'),
+        title: const Text('Register'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -95,19 +73,19 @@ class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Enter the OTP sent to ${authProvider.otpEmail ?? 'your email'}',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              const Text(
+                'Enter your email to get started',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 24),
               TextFormField(
-                controller: _otpController,
+                controller: _emailController,
                 decoration: const InputDecoration(
-                  labelText: 'OTP',
+                  labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
-                validator: Validators.validateOtp,
+                keyboardType: TextInputType.emailAddress,
+                validator: Validators.validateEmail,
                 enabled: !_isSubmitting,
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) => _submitForm(),
@@ -117,21 +95,15 @@ class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
                 onPressed: _isSubmitting ? null : _submitForm,
                 child: _isSubmitting
                     ? const CircularProgressIndicator()
-                    : const Text('Verify'),
+                    : const Text('Continue'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
               ),
               const SizedBox(height: 16),
               TextButton(
-                onPressed: (authProvider.canResendOtp && !_isSubmitting)
-                    ? _resendOtp
-                    : null,
-                child: Text(
-                  authProvider.canResendOtp
-                      ? 'Resend OTP'
-                      : 'Resend OTP (${authProvider.resendSeconds}s)',
-                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Already have an account? Login'),
               ),
             ],
           ),

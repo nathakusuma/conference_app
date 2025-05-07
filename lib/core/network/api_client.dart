@@ -12,8 +12,7 @@ class ApiClient {
     required this.baseUrl,
     required TokenStorage tokenStorage,
     Dio? dio,
-  }) :
-        _tokenStorage = tokenStorage,
+  })  : _tokenStorage = tokenStorage,
         _dio = dio ?? Dio() {
     _dio.options.baseUrl = baseUrl;
     _dio.options.headers = {'Content-Type': 'application/json'};
@@ -63,13 +62,13 @@ class ApiClient {
         // Convert DioException to ApiException
         final apiException = _dioErrorToApiException(error);
         return handler.reject(
-            DioException(
-              requestOptions: error.requestOptions,
-              error: apiException,
-              type: error.type,
-              response: error.response,
-              message: apiException.message,
-            )
+          DioException(
+            requestOptions: error.requestOptions,
+            error: apiException,
+            type: error.type,
+            response: error.response,
+            message: apiException.message,
+          ),
         );
       },
     );
@@ -174,6 +173,33 @@ class ApiClient {
     }
   }
 
+  Future<Map<String, dynamic>> patch(
+      String endpoint, {
+        Map<String, dynamic>? data,
+        Map<String, dynamic>? queryParameters,
+        Map<String, String>? headers,
+        bool requireAuth = false,
+      }) async {
+    try {
+      final options = Options(
+        headers: headers,
+        extra: {'requireAuth': requireAuth},
+      );
+      final response = await _dio.patch(
+        endpoint,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+      );
+      return _processResponse(response);
+    } on DioException catch (e) {
+      if (e.error is ApiException) {
+        throw e.error as ApiException;
+      }
+      throw _dioErrorToApiException(e);
+    }
+  }
+
   Map<String, dynamic> _processResponse(Response response) {
     if (response.data == null || (response.data is String && (response.data as String).isEmpty)) {
       return {'success': true};
@@ -204,7 +230,6 @@ class ApiClient {
         return false;
       }
 
-      // Don't use the interceptor for refresh token request
       final options = Options(
         headers: {'Content-Type': 'application/json'},
         extra: {'requireAuth': false},

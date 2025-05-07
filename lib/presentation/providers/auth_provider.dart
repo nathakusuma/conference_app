@@ -3,14 +3,13 @@ import 'package:flutter/foundation.dart';
 
 import '../../../../core/network/api_client.dart';
 import '../../domain/entities/user.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../../domain/usecases/login_user.dart';
-import '../../domain/usecases/logout_user.dart';
-import '../../domain/usecases/register_user.dart';
-import '../../domain/usecases/request_register_otp.dart';
-import '../../domain/usecases/request_reset_password_otp.dart';
-import '../../domain/usecases/reset_password.dart';
-import '../../domain/usecases/verify_register_otp.dart';
+import '../../domain/usecases/auth/login_user.dart';
+import '../../domain/usecases/auth/logout_user.dart';
+import '../../domain/usecases/auth/register_user.dart';
+import '../../domain/usecases/auth/request_register_otp.dart';
+import '../../domain/usecases/auth/request_reset_password_otp.dart';
+import '../../domain/usecases/auth/reset_password.dart';
+import '../../domain/usecases/auth/verify_register_otp.dart';
 
 enum AuthStatus {
   unauthenticated,

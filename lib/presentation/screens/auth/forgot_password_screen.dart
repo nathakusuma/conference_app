@@ -1,9 +1,9 @@
+import 'package:conference_app/presentation/screens/auth/reset_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/validators.dart';
-import '../providers/auth_provider.dart';
-import 'reset_password_screen.dart';
+import '../../providers/auth_provider.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const routeName = '/forgot-password';

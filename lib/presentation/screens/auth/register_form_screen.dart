@@ -2,29 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/validators.dart';
-import '../providers/auth_provider.dart';
-import 'forgot_password_screen.dart';
-import 'register_email_screen.dart';
+import '../../providers/auth_provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const routeName = '/login';
+class RegisterFormScreen extends StatefulWidget {
+  static const routeName = '/register-form';
 
-  const LoginScreen({Key? key}) : super(key: key);
+  const RegisterFormScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterFormScreen> createState() => _RegisterFormScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterFormScreenState extends State<RegisterFormScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isSubmitting = false;
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _nameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -37,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final success = await authProvider.login(
-      _emailController.text.trim(),
+    final success = await authProvider.register(
+      _nameController.text.trim(),
       _passwordController.text,
     );
 
@@ -47,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     if (success && mounted) {
-      // Login successful, navigate to home
+      // Registration completed and auto-logged in, navigate to home
       Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     }
   }
@@ -56,13 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
-    // Store the error message in a local variable
-    final String? errorMessage = authProvider.errorMessage;
-    if (errorMessage != null) {
+    if (authProvider.errorMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage), // Use local variable instead of accessing provider again
+            content: Text(authProvider.errorMessage!),
             backgroundColor: Colors.red,
           ),
         );
@@ -72,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Complete Registration'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,15 +77,18 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Text(
+                'Complete your profile',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 24),
               TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: const OutlineInputBorder(),
-                  errorText: authProvider.getFieldError('email'),
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Full Name',
+                  border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.emailAddress,
-                validator: Validators.validateEmail,
+                validator: Validators.validateName,
                 enabled: !_isSubmitting,
                 textInputAction: TextInputAction.next,
               ),
@@ -99,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: InputDecoration(
                   labelText: 'Password',
                   border: const OutlineInputBorder(),
-                  errorText: authProvider.getFieldError('password'),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -122,23 +120,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: _isSubmitting ? null : _submitForm,
                 child: _isSubmitting
                     ? const CircularProgressIndicator()
-                    : const Text('Login'),
+                    : const Text('Register'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => Navigator.of(context).pushNamed(
-                  ForgotPasswordScreen.routeName,
-                ),
-                child: const Text('Forgot Password?'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pushNamed(
-                  RegisterEmailScreen.routeName,
-                ),
-                child: const Text("Don't have an account? Register"),
               ),
             ],
           ),

@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/validators.dart';
-import '../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
+import 'register_form_screen.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  static const routeName = '/reset-password';
+class RegisterOtpScreen extends StatefulWidget {
+  static const routeName = '/register-otp';
 
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  const RegisterOtpScreen({Key? key}) : super(key: key);
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<RegisterOtpScreen> createState() => _RegisterOtpScreenState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _otpController = TextEditingController();
-  final _passwordController = TextEditingController();
   bool _isSubmitting = false;
-  bool _obscurePassword = true;
 
   @override
   void dispose() {
     _otpController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -35,18 +33,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     });
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final success = await authProvider.resetPassword(
-      _otpController.text.trim(),
-      _passwordController.text,
-    );
+    final success = await authProvider.verifyRegistrationOtp(_otpController.text.trim());
 
     setState(() {
       _isSubmitting = false;
     });
 
     if (success && mounted) {
-      // Password reset successful and auto-logged in, navigate to home
-      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      Navigator.of(context).pushNamed(RegisterFormScreen.routeName);
     }
   }
 
@@ -67,7 +61,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       _isSubmitting = true;
     });
 
-    await authProvider.requestPasswordResetOtp(authProvider.otpEmail!);
+    await authProvider.requestRegistrationOtp(authProvider.otpEmail!);
 
     setState(() {
       _isSubmitting = false;
@@ -92,7 +86,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reset Password'),
+        title: const Text('Verify OTP'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -102,40 +96,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Enter the code sent to ${authProvider.otpEmail ?? 'your email'}',
+                'Enter the OTP sent to ${authProvider.otpEmail ?? 'your email'}',
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 24),
               TextFormField(
                 controller: _otpController,
                 decoration: const InputDecoration(
-                  labelText: 'OTP Code',
+                  labelText: 'OTP',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
                 validator: Validators.validateOtp,
-                enabled: !_isSubmitting,
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'New Password',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
-                ),
-                obscureText: _obscurePassword,
-                validator: Validators.validatePassword,
                 enabled: !_isSubmitting,
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) => _submitForm(),
@@ -145,7 +117,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 onPressed: _isSubmitting ? null : _submitForm,
                 child: _isSubmitting
                     ? const CircularProgressIndicator()
-                    : const Text('Reset Password'),
+                    : const Text('Verify'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
@@ -157,8 +129,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     : null,
                 child: Text(
                   authProvider.canResendOtp
-                      ? 'Resend Code'
-                      : 'Resend Code (${authProvider.resendSeconds}s)',
+                      ? 'Resend OTP'
+                      : 'Resend OTP (${authProvider.resendSeconds}s)',
                 ),
               ),
             ],
