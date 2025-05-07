@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../conferences/browse_screen.dart';
-import '../users/profile_screen.dart'; // Change this import
+import '../profile/profile_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  static const routeName = '/main'; // Changed from '/'
+  static const routeName = '/main';
 
   const MainNavigationScreen({super.key});
 

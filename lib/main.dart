@@ -1,6 +1,8 @@
 import 'package:conference_app/presentation/screens/conferences/browse_screen.dart';
+import 'package:conference_app/presentation/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'di_container.dart';
 import 'presentation/screens/auth/login_screen.dart';
 import 'presentation/screens/auth/register_email_screen.dart';
@@ -8,7 +10,6 @@ import 'presentation/screens/auth/register_otp_screen.dart';
 import 'presentation/screens/auth/register_form_screen.dart';
 import 'presentation/screens/auth/forgot_password_screen.dart';
 import 'presentation/screens/auth/reset_password_screen.dart';
-import 'presentation/screens/users/profile_screen.dart';
 import 'presentation/screens/navigation/main_navigation_screen.dart';
 
 void main() {

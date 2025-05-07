@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../../domain/entities/user.dart';
-import '../../domain/usecases/users/get_profile.dart';
-import '../../domain/usecases/users/update_profile.dart';
+import '../../domain/usecases/profile/get_profile.dart';
+import '../../domain/usecases/profile/update_profile.dart';
 
 enum UserStatus {
   initial,

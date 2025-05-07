@@ -3,14 +3,15 @@ import 'package:provider/single_child_widget.dart';
 
 import 'core/network/api_client.dart';
 import 'core/utils/token_storage.dart';
-import 'data/datasources/auth_remote_data_source.dart';
-import 'data/datasources/user_remote_data_source.dart';
-import 'data/repositories/auth_repository_impl.dart';
-import 'data/repositories/user_repository_impl.dart';
-import 'data/datasources/conference_remote_data_source.dart';
-import 'data/repositories/conference_repository_impl.dart';
-import 'domain/repositories/conference_repository.dart';
 
+import 'data/datasources/auth_remote_data_source.dart';
+import 'data/datasources/profile_remote_data_source.dart';
+import 'data/datasources/conference_remote_data_source.dart';
+import 'data/repositories/auth_repository_impl.dart';
+import 'data/repositories/profile_repository_impl.dart';
+import 'data/repositories/conference_repository_impl.dart';
+
+import 'domain/repositories/conference_repository.dart';
 import 'domain/usecases/auth/login_user.dart';
 import 'domain/usecases/auth/logout_user.dart';
 import 'domain/usecases/auth/register_user.dart';
@@ -18,13 +19,13 @@ import 'domain/usecases/auth/request_register_otp.dart';
 import 'domain/usecases/auth/request_reset_password_otp.dart';
 import 'domain/usecases/auth/reset_password.dart';
 import 'domain/usecases/auth/verify_register_otp.dart';
-import 'domain/usecases/users/get_profile.dart';
-import 'domain/usecases/users/update_profile.dart';
+import 'domain/usecases/profile/get_profile.dart';
+import 'domain/usecases/profile/update_profile.dart';
 import 'domain/usecases/conferences/get_conferences.dart';
 import 'domain/usecases/conferences/get_conference_by_id.dart';
 
 import 'presentation/providers/auth_provider.dart';
-import 'presentation/providers/user_provider.dart';
+import 'presentation/providers/profile_provider.dart';
 import 'presentation/providers/browse_provider.dart';
 import 'presentation/providers/conference_detail_provider.dart';
 
