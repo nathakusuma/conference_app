@@ -26,8 +26,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<BrowseProvider>(context, listen: false);
-    provider.refresh();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<BrowseProvider>(context, listen: false).refresh();
+    });
   }
 
   @override

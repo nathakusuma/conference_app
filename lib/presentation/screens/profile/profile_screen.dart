@@ -21,10 +21,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<UserProvider>(context, listen: false);
-    provider.fetchProfile();
     _nameController = TextEditingController();
     _bioController = TextEditingController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<UserProvider>(context, listen: false).fetchProfile();
+    });
   }
 
   void _setControllers() {

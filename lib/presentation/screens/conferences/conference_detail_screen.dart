@@ -160,12 +160,14 @@ class ConferenceDetailScreen extends StatelessWidget {
                           children: [
                             Icon(Icons.check_circle, color: Colors.green),
                             SizedBox(width: 8),
-                            Text(
-                              'You are registered for this conference',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
+                            Expanded(
+                              child: Text(
+                                'You are registered for this conference',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
                               ),
                             ),
                           ],

@@ -18,8 +18,9 @@ class _RegistrationsScreenState extends State<RegistrationsScreen> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<RegistrationsProvider>(context, listen: false);
-    provider.refresh();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<RegistrationsProvider>(context, listen: false).refresh();
+    });
   }
 
   @override
