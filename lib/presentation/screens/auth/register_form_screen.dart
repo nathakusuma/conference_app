@@ -8,7 +8,7 @@ import '../navigation/main_navigation_screen.dart';
 class RegisterFormScreen extends StatefulWidget {
   static const routeName = '/register-form';
 
-  const RegisterFormScreen({Key? key}) : super(key: key);
+  const RegisterFormScreen({super.key});
 
   @override
   State<RegisterFormScreen> createState() => _RegisterFormScreenState();

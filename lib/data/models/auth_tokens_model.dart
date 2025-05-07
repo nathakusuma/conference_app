@@ -3,14 +3,10 @@ import 'user_model.dart';
 
 class AuthTokensModel extends AuthTokens {
   AuthTokensModel({
-    required String accessToken,
-    required String refreshToken,
-    required UserModel user,
-  }) : super(
-    accessToken: accessToken,
-    refreshToken: refreshToken,
-    user: user,
-  );
+    required super.accessToken,
+    required super.refreshToken,
+    required UserModel super.user,
+  });
 
   factory AuthTokensModel.fromJson(Map<String, dynamic> json) {
     return AuthTokensModel(

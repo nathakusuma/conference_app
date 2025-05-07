@@ -8,7 +8,7 @@ import 'register_form_screen.dart';
 class RegisterOtpScreen extends StatefulWidget {
   static const routeName = '/register-otp';
 
-  const RegisterOtpScreen({Key? key}) : super(key: key);
+  const RegisterOtpScreen({super.key});
 
   @override
   State<RegisterOtpScreen> createState() => _RegisterOtpScreenState();
@@ -115,12 +115,12 @@ class _RegisterOtpScreenState extends State<RegisterOtpScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isSubmitting ? null : _submitForm,
-                child: _isSubmitting
-                    ? const CircularProgressIndicator()
-                    : const Text('Verify'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
+                child: _isSubmitting
+                    ? const CircularProgressIndicator()
+                    : const Text('Verify'),
               ),
               const SizedBox(height: 16),
               TextButton(

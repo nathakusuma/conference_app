@@ -2,22 +2,14 @@ import '../../domain/entities/user.dart';
 
 class UserModel extends User {
   UserModel({
-    String? id,
-    String? name,
-    String? email,
-    UserRole? role,
-    String? bio,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) : super(
-    id: id,
-    name: name,
-    email: email,
-    role: role,
-    bio: bio,
-    createdAt: createdAt,
-    updatedAt: updatedAt,
-  );
+    super.id,
+    super.name,
+    super.email,
+    super.role,
+    super.bio,
+    super.createdAt,
+    super.updatedAt,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     UserRole? parseRole(String? roleStr) {

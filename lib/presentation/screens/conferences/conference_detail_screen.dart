@@ -17,8 +17,8 @@ class ConferenceDetailScreen extends StatelessWidget {
   const ConferenceDetailScreen({
     required this.conferenceId,
     this.isRegistered = false,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class ConferenceDetailScreen extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: regProvider.status == RegistrationStatus.loading
                                   ? null
-                                  : () => _showRegisterDialog(context, regProvider, conf!.id),
+                                  : () => _showRegisterDialog(context, regProvider, conf.id),
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 backgroundColor: Colors.green,

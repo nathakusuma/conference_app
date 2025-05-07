@@ -8,7 +8,7 @@ import 'register_otp_screen.dart';
 class RegisterEmailScreen extends StatefulWidget {
   static const routeName = '/register-email';
 
-  const RegisterEmailScreen({Key? key}) : super(key: key);
+  const RegisterEmailScreen({super.key});
 
   @override
   State<RegisterEmailScreen> createState() => _RegisterEmailScreenState();
@@ -93,12 +93,12 @@ class _RegisterEmailScreenState extends State<RegisterEmailScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isSubmitting ? null : _submitForm,
-                child: _isSubmitting
-                    ? const CircularProgressIndicator()
-                    : const Text('Continue'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
+                child: _isSubmitting
+                    ? const CircularProgressIndicator()
+                    : const Text('Continue'),
               ),
               const SizedBox(height: 16),
               TextButton(

@@ -8,7 +8,7 @@ import '../../providers/auth_provider.dart';
 class ForgotPasswordScreen extends StatefulWidget {
   static const routeName = '/forgot-password';
 
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
@@ -91,12 +91,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isSubmitting ? null : _submitForm,
-                child: _isSubmitting
-                    ? const CircularProgressIndicator()
-                    : const Text('Send Reset Code'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
+                child: _isSubmitting
+                    ? const CircularProgressIndicator()
+                    : const Text('Send Reset Code'),
               ),
               const SizedBox(height: 16),
               TextButton(
